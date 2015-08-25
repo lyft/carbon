@@ -108,13 +108,8 @@ class AggregatedConsistentHashingRouter(DatapointRouter):
     # if the metric will not be aggregated, send it raw
     # (will pass through aggregation)
     if len(resolved_metrics) == 0:
+      return self.hash_router.getDestinations(key)
+    else:
       resolved_metrics.append(key)
-
-    # get consistent hashing destinations based on aggregate forms
-    destinations = set()
-    for resolved_metric in resolved_metrics:
-      for destination in self.hash_router.getDestinations(resolved_metric):
-        destinations.add(destination)
-
-    for destination in destinations:
-      yield destination
+      key2 = str(hash(frozenset(resolved_metrics)))
+      return self.hash_router.getDestinations(key2)

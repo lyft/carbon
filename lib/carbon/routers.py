@@ -110,6 +110,5 @@ class AggregatedConsistentHashingRouter(DatapointRouter):
     if len(resolved_metrics) == 0:
       return self.hash_router.getDestinations(key)
     else:
-      resolved_metrics.append(key)
       key2 = str(hash(frozenset(resolved_metrics)))
       return self.hash_router.getDestinations(key2)
